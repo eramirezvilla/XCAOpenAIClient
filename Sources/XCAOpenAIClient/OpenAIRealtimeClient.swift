@@ -1,6 +1,6 @@
 import Foundation
 
-public struct OpenAIRealtimeClient {
+public class OpenAIRealtimeClient {
     private var webSocketTask: URLSessionWebSocketTask?
     private let apiKey: String
     private let urlSession = URLSession(configuration: .default)
