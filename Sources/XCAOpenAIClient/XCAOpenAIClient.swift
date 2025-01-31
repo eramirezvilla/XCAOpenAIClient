@@ -95,6 +95,30 @@ public struct OpenAIClient {
         
         return text
     }
+
+    public func generateAudioTranslations(audioData: Data, fileName: String = "recording.m4a") async throws -> String {
+        var request = URLRequest(url: URL(string: "https://api.openai.com/v1/audio/translations")!)
+        let boundary: String = UUID().uuidString
+        request.timeoutInterval = 30
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        let bodyBuilder = MultipartFormDataBodyBuilder(boundary: boundary, entries: [
+            .file(paramName: "file", fileName: fileName, fileData: audioData, contentType: "audio/mpeg"),
+            .string(paramName: "model", value: "whisper-1")
+        ])
+        request.httpBody = bodyBuilder.build()
+        let (data, resp) = try await urlSession.data(for: request)
+        guard let httpResp = resp as? HTTPURLResponse, httpResp.statusCode == 200 else {
+            throw "Invalid Status Code \((resp as? HTTPURLResponse)?.statusCode ?? -1)"
+        }
+        guard let text = String(data: data, encoding: .utf8) else {
+            throw "Invalid format"
+        }
+        
+        return text
+    }
     
     public func generateDallE3Image(prompt: String,
                                     quality: Components.Schemas.CreateImageRequest.qualityPayload = .standard,
