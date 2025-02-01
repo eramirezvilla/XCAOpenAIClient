@@ -17,7 +17,7 @@ public class OpenAIRealtimeClient {
     public func connect() {
         guard !isConnected else { return }
         
-        var request = URLRequest(url: URL(string: "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17")!)
+        var request = URLRequest(url: URL(string: "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview")!)
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.setValue("realtime=v1", forHTTPHeaderField: "OpenAI-Beta")
 
