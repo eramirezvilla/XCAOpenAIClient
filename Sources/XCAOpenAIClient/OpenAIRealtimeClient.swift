@@ -4,7 +4,7 @@ public class OpenAIRealtimeClient {
     private var webSocketTask: URLSessionWebSocketTask?
     private let apiKey: String
     private let urlSession = URLSession(configuration: .default)
-    private var isConnected: Bool = false
+    public var isConnected: Bool = false
     
     public var onMessageReceived: ((String) -> Void)?  // Callback for incoming messages
     public var onError: ((Error) -> Void)?  // Error handling callback
